@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Przejście na System Fiducjarny - Traktat Makroekonomiczny | Lyceum</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- KaTeX for client-side mathematical formula rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Plotly.js for quantitative charts and simulation paths -->
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#f8fafc] text-slate-900 antialiased min-h-screen">
+
+  <!-- ========================================================================= -->
+  <!-- PASEK GÓRNY (STICKY HEADER)                                              -->
+  <!-- ========================================================================= -->
+  <header id="stickyHeader" class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-blue-600 text-white font-bold flex items-center justify-center text-lg shadow-sm shadow-blue-500/20">
+        🏛️
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Lyceum Monetary Series</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span class="text-xs font-semibold text-slate-500">Historia & Teoria Pieniądza</span>
+        </div>
+        <h1 class="text-sm font-bold text-slate-900 leading-none">Przejście na System Fiducjarny: Od Złota do Waluty z Dekretu</h1>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="hidden md:flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-lg text-xs font-mono text-slate-600 border border-slate-200">
+        <span>Szok Nixona 1971</span>
+        <span class="text-slate-400">|</span>
+        <span class="text-emerald-700 font-semibold">Pieniądz Endogeniczny</span>
+      </div>
+      <button onclick="window.print()" class="btn-secondary text-xs">
+        <span>🖨️ Drukuj / PDF</span>
+      </button>
+      <a href="../README.md" class="btn-primary text-xs">
+        <span>Indeks Lyceum</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- UKŁAD DWUKOLUMNOWY (SIDEBAR + GŁÓWNA TREŚĆ)                              -->
+  <!-- ========================================================================= -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex gap-8">
+
+    <!-- NAWIGACJA BOCZNA (TOC) -->
+    <aside class="hidden lg:block w-72 shrink-0">
+      <div class="sticky top-20 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+        <div class="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono">
+          Spis Treści Traktatu
+        </div>
+
+        <nav class="space-y-1 text-xs">
+          <a href="#m1-istota" class="nav-link active">
+            <span class="font-mono text-slate-400 mr-1.5">01.</span> Czym Jest Pieniądz Fiducjarny?
+          </a>
+          <a href="#m2-historia" class="nav-link">
+            <span class="font-mono text-slate-400 mr-1.5">02.</span> Wielka Oś Czasu (1870-1976)
+          </a>
+          <a href="#m3-triffin" class="nav-link">
+            <span class="font-mono text-slate-400 mr-1.5">03.</span> Dylemat Triffina & Szok Nixona
+          </a>
+          <a href="#m4-kreacja" class="nav-link">
+            <span class="font-mono text-slate-400 mr-1.5">04.</span> Anatomia Nowoczesnej Kreacji
+          </a>
+          <a href="#m5-fisher" class="nav-link">
+            <span class="font-mono text-slate-400 mr-1.5">05.</span> Równanie Fishera & Inflacja
+          </a>
+          <a href="#m6-trilemma" class="nav-link">
+            <span class="font-mono text-slate-400 mr-1.5">06.</span> Niemożliwy Trójkąt Mundella
+          </a>
+          <a href="#m7-bilans" class="nav-link">
+            <span class="font-mono text-slate-400 mr-1.5">07.</span> Bilans: Korzyści vs Patologie
+          </a>
+          <a href="#m8-quiz" class="nav-link">
+            <span class="font-mono text-slate-400 mr-1.5">08.</span> Sprawdzian Wiedzy (Quiz)
+          </a>
+          <a href="#m9-python" class="nav-link">
+            <span class="font-mono text-slate-400 mr-1.5">09.</span> Implementacja w Pythonie
+          </a>
+          <a href="#m10-bibliografia" class="nav-link">
+            <span class="font-mono text-slate-400 mr-1.5">10.</span> Źródła & Bibliografia
+          </a>
+        </nav>
+
+        <div class="pt-4 border-t border-slate-100 space-y-2">
+          <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider font-mono">Wskaźniki Systemowe</div>
+          <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1 font-mono">
+            <div class="flex justify-between text-slate-600">
+              <span>Standard Złota:</span>
+              <span class="font-bold text-amber-600">Skończony (Fixed)</span>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span>Standard Fiat:</span>
+              <span class="font-bold text-blue-600">Elastyczny (Debt)</span>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span>Kotwica:</span>
+              <span class="font-bold text-emerald-600">Prawo & Zaufanie</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- GŁÓWNA TREŚĆ STRONY -->
+    <main class="flex-1 space-y-10 min-w-0">
+
+      <!-- ===================================================================== -->
+      <!-- HERO BANNER                                                           -->
+      <!-- ===================================================================== -->
+      <section class="saas-card p-8 bg-gradient-to-br from-white via-slate-50 to-blue-50/40 relative overflow-hidden">
+        <div class="max-w-2xl space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-200">
+            <span>🏛️ Makroekonomia & Historia Instytucjonalna</span>
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Na czym polegało przejście na system fiducjarny?
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+            Przejście na system fiducjarny to fundamentalna rewolucja w dziejach cywilizacji: zerwanie powiązania pieniądza z jakimkolwiek fizycznym kruszcem (złotem lub srebrem) i oparcie jego wartości wyłącznie na dekrecie prawnym państwa, monopolu ściągania podatków oraz powszechnym zaufaniu uczestników rynku. Poniższy interaktywny traktat wyjaśnia mechanikę, historię i współczesne konsekwencje tego procesu.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-2">
+            <a href="#m3-triffin" class="btn-primary text-xs">
+              <span>Eksploruj Szok Nixona 1971</span>
+              <span>→</span>
+            </a>
+            <a href="#m4-kreacja" class="btn-secondary text-xs">
+              <span>Jak banki tworzą pieniądz?</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- MODUŁ 1: CZYM JEST PIENIĄDZ FIDUCJARNY?                               -->
+      <!-- ===================================================================== -->
+      <section id="m1-istota" class="saas-card p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Moduł 01</span>
+            <h3 class="text-xl font-bold text-slate-900">Istota Pieniądza: Ewolucja od Towaru do Zaufania</h3>
+          </div>
+          <span class="badge-blue text-xs font-mono px-2.5 py-1 rounded-md font-semibold">Teoria Monetarna</span>
+        </div>
+
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Pojęcie <strong>pieniądza fiducjarnego</strong> (ang. <em>fiat money</em>) wywodzi się z dwóch łacińskich słów:
+          <em>fiat</em> ("niech się stanie" - czyli mocą dekretu prawnego suwerena) oraz <em>fides</em> ("wiara, zaufanie"). 
+          Pieniądz ten nie posiada żadnej wartości wewnętrznej (nie jest kruszcem, zbożem ani solą) i nie przysługuje za niego roszczenie do odbioru złota w banku centralnym.
+        </p>
+
+        <!-- KARTY PORÓWNAWCZE 3 FORM PIENIĄDZA -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- 1. Towarowy -->
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2.5">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🌾</span>
+              <h4 class="text-sm font-bold text-slate-900">1. Pieniądz Towarowy</h4>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Zboże, sól, bydło, muszle kauri. Wartość wynika z <strong>bezpośredniej użyteczności konsumpcyjnej</strong>. Wady: brak podzielności, psucie się, ogromne koszty transportu.
+            </p>
+            <div class="text-[11px] font-mono text-slate-500 pt-1 border-t border-slate-200">
+              Wartość: 100% wewnętrzna (użytkowa)
+            </div>
+          </div>
+
+          <!-- 2. Kruszcowy -->
+          <div class="p-5 rounded-xl border border-amber-200 bg-amber-50/50 space-y-2.5">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🪙</span>
+              <h4 class="text-sm font-bold text-amber-950">2. Pieniądz Kruszcowy</h4>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Złote monety lub kwity depozytowe wymienialne na twardy kruszec po stałym parytecie (np. 1 uncja = 35 USD). Podaż ograniczona geologicznym trudem wydobycia złota.
+            </p>
+            <div class="text-[11px] font-mono text-amber-800 pt-1 border-t border-amber-200">
+              Wartość: Pokrycie w metalu szlachetnym
+            </div>
+          </div>
+
+          <!-- 3. Fiducjarny -->
+          <div class="p-5 rounded-xl border border-blue-200 bg-blue-50/50 space-y-2.5">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🏛️</span>
+              <h4 class="text-sm font-bold text-blue-950">3. Pieniądz Fiducjarny</h4>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Współczesny złoty, dolar, euro. Banknoty i zapisy cyfrowe w bankach. Brak wymienialności na kruszec. Podaż jest elastyczna i tworzona poprzez akcję kredytową.
+            </p>
+            <div class="text-[11px] font-mono text-blue-800 pt-1 border-t border-blue-200">
+              Wartość: Prawo państwa + Podatki + Zaufanie
+            </div>
+          </div>
+        </div>
+
+        <!-- DLACZEGO MA WARTOŚĆ? TEORIA CHARTALIZMU -->
+        <div class="p-5 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+          <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <span>⚖️ Dlaczego kawałek papieru lub zapis w bazie danych ma realną wartość?</span>
+          </h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Zgodnie z teorią <strong>chartalizmu</strong> (Georg Friedrich Knapp, 1905) oraz współczesną teorią monetarną, pieniądz fiducjarny funkcjonuje dzięki trzem nierozerwalnym filarom:
+          </p>
+          <ul class="text-xs text-slate-600 space-y-2 list-disc list-inside pl-2 leading-relaxed">
+            <li><strong>Prawny środek płatniczy (Legal Tender):</strong> Państwo prawnie nakazuje akceptację danej waluty przy umarzaniu wszelkich długów publicznych i prywatnych.</li>
+            <li><strong>Podatkowy napęd waluty (Tax-driven money):</strong> Państwo pobiera podatki pod rygorem sankcji karnych i przyjmuje wyłącznie własną walutę fiducjarną. Każdy obywatel i przedsiębiorstwo musi zdobyć tę walutę, aby rozliczyć się z fiskusem, co generuje powszechny, nieustanny popyt.</li>
+            <li><strong>Wiarygodność instytucjonalna:</strong> Zaufanie, że bank centralny (NBP, Fed, EBC) nie dopuści do natychmiastowej hiperinflacji i będzie kontrolował stabilność siły nabywczej.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- MODUŁ 2: WIELKA OŚ CZASU                                              -->
+      <!-- ===================================================================== -->
+      <section id="m2-historia" class="saas-card p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Moduł 02</span>
+            <h3 class="text-xl font-bold text-slate-900">Droga do Zerwania Kotwicy Kruszcowej (1870-1976)</h3>
+          </div>
+          <span class="badge-gold text-xs font-mono px-2.5 py-1 rounded-md font-semibold">Oś Czasu</span>
+        </div>
+
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Przejście na system fiducjarny nie było nagłym kaprysem, lecz rezultatem serii kryzysów wojennych, ograniczeń płynności i niemożności pogodzenia globalnego handlu z geologicznymi ograniczeniami wydobycia złota.
+        </p>
+
+        <div class="space-y-4 timeline-stem pl-8">
+          <!-- 1870-1914 -->
+          <div class="relative bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-amber-700 font-mono">1870 - 1914</span>
+              <span class="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">Klasyczny Standard Złota</span>
+            </div>
+            <h4 class="text-sm font-bold text-slate-900">Złoty Wiek Waluty Kruszcowej</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Globalny handel oparty na bezpośredniej wymienialności walut na kruszec. Kursy walut sztywne. Mechanizm Davida Hume'a (Price-Specie Flow Mechanism) automatycznie bilansował handel: kraj z deficytem tracił złoto, co obniżało jego ceny i przywracało konkurencyjność.
+            </p>
+          </div>
+
+          <!-- 1914-1933 -->
+          <div class="relative bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-rose-700 font-mono">1914 - 1933</span>
+              <span class="text-[11px] font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded">Wojny & Wielki Kryzys</span>
+            </div>
+            <h4 class="text-sm font-bold text-slate-900">Zawieszenie Wymienialności i Dekret Roosevelta</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              W 1914 r. państwa zawieszają wymienialność, by drukować pusty pieniądz na zbrojenia (hiperinflacja w Weimarze 1923). Podczas Wielkiego Kryzysu (1929) gorset złota uniemożliwiał ratowanie banków. W 1933 r. Franklin D. Roosevelt dekretem <em>Executive Order 6102</em> zakazuje posiadania złota w USA, konfiskuje je po 20.67 USD/oz i natychmiast dewaluuje dolara do 35 USD/oz.
+            </p>
+          </div>
+
+          <!-- 1944: Bretton Woods -->
+          <div class="relative bg-white border border-blue-200 rounded-xl p-4 shadow-sm space-y-1 bg-blue-50/20">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-blue-700 font-mono">Lipiec 1944</span>
+              <span class="text-[11px] font-semibold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">Porozumienie z Bretton Woods</span>
+            </div>
+            <h4 class="text-sm font-bold text-slate-900">Standard Dolarowo-Złoty (Gold Exchange Standard)</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              44 państwa alianckie tworzą powojenny ład. USA posiadają 2/3 światowego złota. Dolar zostaje jedyną walutą wymienialną na złoto (po 35 USD za uncję dla banków centralnych), a pozostałe waluty powiązują swoje kursy ze sztywnym parytetem do dolara. Powstają MFW i Bank Światowy.
+            </p>
+          </div>
+
+          <!-- 1960-1970 -->
+          <div class="relative bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-amber-700 font-mono">1960 - 1970</span>
+              <span class="text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">Narastanie Napięć</span>
+            </div>
+            <h4 class="text-sm font-bold text-slate-900">Dylemat Triffina i Wyprawa de Gaulle'a</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Świat potrzebuje dolarów do handlu, więc USA eksportują deficyty. Liczba dolarów za granicą przewyższa zapasy złota w Fort Knox. W 1965 r. prezydent Francji Charles de Gaulle publicznie krytykuje "nieuzasadniony przywilej Ameryki" i wysyła okręty wojenne do Nowego Jorku, żądając fizycznego kruszcu w zamian za dolary.
+            </p>
+          </div>
+
+          <!-- 15 Sierpnia 1971: Szok Nixona -->
+          <div class="relative bg-white border border-rose-300 rounded-xl p-4 shadow-sm space-y-1 bg-rose-50/30">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-rose-700 font-mono">15 Sierpnia 1971</span>
+              <span class="text-[11px] font-semibold text-white bg-rose-600 px-2 py-0.5 rounded">Szok Nixona (Nixon Shock)</span>
+            </div>
+            <h4 class="text-sm font-bold text-rose-950">Jednostronne Zamknięcie Okienka Złota</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Prezydent Richard Nixon w telewizyjnym orędziu jednostronnie "tymczasowo" zawiesza wymienialność dolara na złoto. USA ratują resztki złota przed runem banków centralnych. Kotwica kruszcowa pęka bezpowrotnie.
+            </p>
+          </div>
+
+          <!-- 1976: Porozumienie Jamajskie -->
+          <div class="relative bg-white border border-emerald-300 rounded-xl p-4 shadow-sm space-y-1 bg-emerald-50/20">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-800 font-mono">1976</span>
+              <span class="text-[11px] font-semibold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Porozumienie Jamajskie</span>
+            </div>
+            <h4 class="text-sm font-bold text-slate-900">Oficjalna Demonetyzacja Złota i Płynne Kursy</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              MFW oficjalnie potwierdza demonetyzację złota. System światowy definitywnie przechodzi na płynne kursy walutowe i czysty pieniądz fiducjarny kreowany przez państwa i banki komercyjne.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- MODUŁ 3: DYLEMAT TRIFFINA I SZOK NIXONA (INTERAKTYWNY MODEL)           -->
+      <!-- ===================================================================== -->
+      <section id="m3-triffin" class="saas-card p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Moduł 03</span>
+            <h3 class="text-xl font-bold text-slate-900">Dylemat Triffina: Dlaczego Bretton Woods Musiało Upaść?</h3>
+          </div>
+          <span class="badge-rose text-xs font-mono px-2.5 py-1 rounded-md font-semibold">Symulator 1945-1975</span>
+        </div>
+
+        <p class="text-sm text-slate-600 leading-relaxed">
+          W 1960 roku belgijsko-amerykański ekonomista <strong>Robert Triffin</strong> sformułował fundamentalną sprzeczność systemu powojennego:
+          Jeśli USA nie będą dostarczać światu wystarczającej liczby dolarów (generując deficyty handlowe), handel światowy ulegnie paraliżowi. 
+          Lecz jeśli będą dostarczać dolary, liczba zagranicznych roszczeń przewyższy zapasy złota w Fort Knox, wywołując kryzys zaufania i ucieczkę od dolara.
+        </p>
+
+        <!-- COACHMARK -->
+        <div class="coachmark-box">
+          <span class="text-blue-600 text-lg">👉</span>
+          <div class="text-xs text-blue-900 leading-relaxed">
+            <strong>Jak z tego korzystać:</strong>
+            1. Przesuwaj suwak <strong>Roku Historycznego</strong> (od 1945 do 1975).
+            2. Obserwuj czerwony pionowy kursor na wykresie przecinający krzywą rezerw złota USA (złota linia) i zagranicznych roszczeń dolarowych (niebieska linia).
+            3. Zwróć uwagę na rok <strong>1960</strong> (punkt przecięcia, wskaźnik pokrycia spada poniżej 100%) oraz <strong>1971</strong> (moment ostatecznego załamania).
+          </div>
+        </div>
+
+        <!-- KONTROLKI I WSKAŹNIKI -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          <!-- Suwak -->
+          <div class="md:col-span-5 space-y-3 p-4 bg-slate-50 border border-slate-200 rounded-xl">
+            <div class="flex justify-between items-center">
+              <label for="sliderTriffinYear" class="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
+                Wybrany Rok Analizy:
+              </label>
+              <span id="valTriffinYear" class="text-lg font-extrabold font-mono text-blue-600 bg-white px-3 py-0.5 rounded-md border border-slate-200 shadow-sm">
+                1971
+              </span>
+            </div>
+            <input type="range" id="sliderTriffinYear" min="1945" max="1975" step="1" value="1971" class="tactile-slider">
+            <div class="flex justify-between text-[11px] font-mono text-slate-400">
+              <span>1945 (Bretton Woods)</span>
+              <span>1960 (Triffin)</span>
+              <span>1975 (Koniec)</span>
+            </div>
+            <div class="pt-2 border-t border-slate-200">
+              <span id="triffinStatusBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+                Kryzys Wypłacalności: Run na Złoto
+              </span>
+            </div>
+          </div>
+
+          <!-- Kafelki KPI -->
+          <div class="md:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="kpi-tile">
+              <div class="text-[11px] font-mono text-slate-500 uppercase">Wskaźnik Pokrycia</div>
+              <div id="kpiCoverRatio" class="text-2xl font-bold font-mono text-rose-600">21.8%</div>
+              <div class="text-[10px] text-slate-400">Złoto / Dolary</div>
+            </div>
+            <div class="kpi-tile">
+              <div class="text-[11px] font-mono text-slate-500 uppercase">Złoto Fort Knox</div>
+              <div id="kpiGoldValue" class="text-xl font-bold font-mono text-amber-600">10.2 mld $</div>
+              <div class="text-[10px] text-slate-400">po 35$/oz</div>
+            </div>
+            <div class="kpi-tile">
+              <div class="text-[11px] font-mono text-slate-500 uppercase">Roszczenia Dolarowe</div>
+              <div id="kpiDollarClaims" class="text-xl font-bold font-mono text-blue-600">46.8 mld $</div>
+              <div class="text-[10px] text-slate-400">w rękach zagranicy</div>
+            </div>
+            <div class="kpi-tile">
+              <div class="text-[11px] font-mono text-slate-500 uppercase">Deficyt Pokrycia</div>
+              <div id="kpiTriffinDeficit" class="text-xl font-bold font-mono text-rose-600">-36.6 mld $</div>
+              <div class="text-[10px] text-slate-400">Ryzyko runu</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WYKRES PLOTLY -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden bg-white p-2">
+          <div id="plotTriffin" class="w-full"></div>
+        </div>
+
+        <!-- NARRACJA HISTORYCZNA DLA WYBRANEGO ROKU -->
+        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-start gap-3">
+          <span class="text-slate-500 text-lg">📜</span>
+          <div class="text-xs text-slate-700 leading-relaxed">
+            <strong>Kontekst geopolityczny dla wybranego momentu:</strong>
+            <p id="triffinNarrativeText" class="mt-1 text-slate-600">
+              15 sierpnia 1971: Szok Nixona! Prezydent Richard Nixon jednostronnie zawiesza wymienialność dolara na złoto. Koniec Bretton Woods.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- MODUŁ 4: ANATOMIA NOWOCZESNEJ KREACJI PIENIĄDZA                        -->
+      <!-- ===================================================================== -->
+      <section id="m4-kreacja" class="saas-card p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Moduł 04</span>
+            <h3 class="text-xl font-bold text-slate-900">Anatomia Kreacji Pieniądza: Pieniądz Dłużny (Endogeniczny)</h3>
+          </div>
+          <span class="badge-emerald text-xs font-mono px-2.5 py-1 rounded-md font-semibold">Bankowość Rezerwy Cząstkowej</span>
+        </div>
+
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Powszechny mit głosi, że banki są jedynie "pośrednikami", którzy zbierają oszczędności depozytariuszy i pożyczają je innym. 
+          W rzeczywistości, jak oficjalnie stwierdził <strong>Bank of England w 2014 roku</strong>, we współczesnym systemie fiducjarnym to 
+          <strong>kredyty tworzą depozyty</strong> (<em>loans create deposits</em>). Bank komercyjny tworzy nowy pieniądz za każdym razem, gdy podpisuje umowę kredytową, dopisując cyfry po stronie aktywów (wierzytelność) i pasywów (nowy depozyt a vista).
+        </p>
+
+        <!-- COACHMARK -->
+        <div class="coachmark-box">
+          <span class="text-blue-600 text-lg">👉</span>
+          <div class="text-xs text-blue-900 leading-relaxed">
+            <strong>Jak z tego korzystać:</strong>
+            1. Zmieniaj <strong>Depozyt Początkowy</strong> ($M_0$), <strong>Stopę Rezerwy Obowiązkowej</strong> ($rr$) oraz <strong>Skłonność do Pożyczania</strong>.
+            2. Obserwuj kaskadę kreacji na wykresie słupkowym (niebieski = depozyty, zielony = nowo stworzony pieniądz kredytowy, żółty = zamrożona rezerwa w banku centralnym).
+            3. Sprawdź, jaki procent łącznej podaży to <em>czysty dług</em> wykreowany z powietrza.
+          </div>
+        </div>
+
+        <!-- SUWAKI KREACJI PIENIĄDZA -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-slate-700 font-mono">Depozyt Bazowy ($M_0$):</span>
+              <span id="valBaseMoney" class="text-xs font-bold font-mono text-blue-600">10 000 zł</span>
+            </div>
+            <input type="range" id="sliderBaseMoney" min="1000" max="50000" step="1000" value="10000" class="tactile-slider">
+            <div class="text-[10px] text-slate-400">Pieniądz bazowy wyemitowany przez BC</div>
+          </div>
+
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-slate-700 font-mono">Rezerwa Obowiązkowa ($rr$):</span>
+              <span id="valReserveRatio" class="text-xs font-bold font-mono text-amber-600">3.5%</span>
+            </div>
+            <input type="range" id="sliderReserveRatio" min="1" max="25" step="0.5" value="3.5" class="tactile-slider tactile-slider-gold">
+            <div class="text-[10px] text-slate-400">Stopa rezerwy w NBP (w Polsce aktualnie 3.5%)</div>
+          </div>
+
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-slate-700 font-mono">Wskaźnik Akcji Kredytowej:</span>
+              <span id="valLendingRate" class="text-xs font-bold font-mono text-emerald-600">90%</span>
+            </div>
+            <input type="range" id="sliderLendingRate" min="50" max="100" step="2" value="90" class="tactile-slider">
+            <div class="text-[10px] text-slate-400">Odsetek wolnych środków trafiający w kredyty</div>
+          </div>
+        </div>
+
+        <!-- WSKAŹNIKI KASKADY -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="kpi-tile">
+            <div class="text-[11px] font-mono text-slate-500 uppercase">Łączna Podaż ($M_1/M_2$)</div>
+            <div id="kpiTotalMoney" class="text-2xl font-bold font-mono text-blue-600">76 046 zł</div>
+            <div class="text-[10px] text-slate-400">Wygenerowane z depozytu</div>
+          </div>
+          <div class="kpi-tile">
+            <div class="text-[11px] font-mono text-slate-500 uppercase">Pieniądz Dłużny (Kredyt)</div>
+            <div id="kpiCreatedDebt" class="text-xl font-bold font-mono text-emerald-600">66 046 zł</div>
+            <div class="text-[10px] text-slate-400">Stworzony z umów pożyczkowych</div>
+          </div>
+          <div class="kpi-tile">
+            <div class="text-[11px] font-mono text-slate-500 uppercase">Udział Długu w Podaży</div>
+            <div id="kpiDebtShare" class="text-xl font-bold font-mono text-purple-600">86.8%</div>
+            <div class="text-[10px] text-slate-400">% pieniądza bez bazy kruszcowej</div>
+          </div>
+          <div class="kpi-tile">
+            <div class="text-[11px] font-mono text-slate-500 uppercase">Efektywny Mnożnik</div>
+            <div id="kpiMultiplier" class="text-xl font-bold font-mono text-slate-800">7.60x</div>
+            <div class="text-[10px] text-slate-400">m = M_total / M_0</div>
+          </div>
+        </div>
+
+        <!-- WYKRES PLOTLY DLA KREACJI -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden bg-white p-2">
+          <div id="plotMoneyCreation" class="w-full"></div>
+        </div>
+
+        <div class="p-4 bg-emerald-50/60 border border-emerald-200 rounded-xl text-xs text-emerald-950 space-y-1">
+          <div class="font-bold flex items-center gap-1.5">
+            <span>💡 Paradoks Spłaty Długu:</span>
+          </div>
+          <p class="leading-relaxed">
+            Skoro współczesny pieniądz powstaje w momencie zaciągania kredytu, to w momencie spłaty raty kapitałowej dochodzi do <strong>zniszczenia pieniądza</strong> (<em>money destruction</em>). Gdyby wszyscy obywatele i przedsiębiorstwa w państwie spłacili naraz wszystkie swoje długi bankowe, podaż pieniądza w gospodarce skurczyłaby się o ponad 90%, wywołując natychmiastową, katastrofalną deflację.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- MODUŁ 5: RÓWNANIE FISHERA I PODATEK INFLACYJNY                         -->
+      <!-- ===================================================================== -->
+      <section id="m5-fisher" class="saas-card p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Moduł 05</span>
+            <h3 class="text-xl font-bold text-slate-900">Równanie Wymiany Fishera & Podatek Inflacyjny</h3>
+          </div>
+          <span class="badge-gold text-xs font-mono px-2.5 py-1 rounded-md font-semibold">Ilościowa Teoria Pieniądza</span>
+        </div>
+
+        <p class="text-sm text-slate-600 leading-relaxed">
+          W systemie fiducjarnym brak kruszcowego ograniczenia oznacza, że bank centralny i system bankowy mogą kreować dowolną ilość waluty. 
+          Zależność między podażą pieniądza a poziomem cen opisuje fundamentalne <strong>Równanie Wymiany Irvinga Fishera</strong>:
+        </p>
+
+        <!-- KATEX EQUATION -->
+        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-center space-y-2">
+          <div class="text-lg">
+            $$M \cdot V = P \cdot Y \implies P = \frac{M \cdot V}{Y}$$
+          </div>
+          <div class="text-xs text-slate-600">
+            gdzie: $M$ = podaż pieniądza fiducjarnego, $V$ = prędkość obiegu (velocity), $P$ = ogólny poziom cen, $Y$ = realne PKB.
+          </div>
+        </div>
+
+        <!-- COACHMARK -->
+        <div class="coachmark-box">
+          <span class="text-blue-600 text-lg">👉</span>
+          <div class="text-xs text-blue-900 leading-relaxed">
+            <strong>Jak z tego korzystać:</strong>
+            1. Ustaw tempo wzrostu podaży pieniądza ($\Delta M$), zmianę prędkości obiegu ($\Delta V$) oraz realny wzrost PKB ($\Delta Y$).
+            2. Wybierz <strong>Horyzont Czasowy</strong> (np. 15 lat).
+            3. Obserwuj erozję siły nabywczej początkowych 100 zł (czerwona linia) w porównaniu do hipotetycznego kruszcu o stałej sile (złota linia przerywana).
+          </div>
+        </div>
+
+        <!-- KONTROLKI SUWAKÓW -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+            <div class="flex justify-between items-center text-xs font-mono">
+              <span class="font-bold text-slate-700">Wzrost Podaży $\Delta M$:</span>
+              <span id="valDeltaM" class="font-bold text-rose-600">+10.0%</span>
+            </div>
+            <input type="range" id="sliderDeltaM" min="-5" max="30" step="0.5" value="10" class="tactile-slider">
+            <div class="text-[10px] text-slate-400">Ekspansja monetarna banków</div>
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+            <div class="flex justify-between items-center text-xs font-mono">
+              <span class="font-bold text-slate-700">Prędkość Cyrkulacji $\Delta V$:</span>
+              <span id="valDeltaV" class="font-bold text-slate-700">0.0%</span>
+            </div>
+            <input type="range" id="sliderDeltaV" min="-10" max="10" step="0.5" value="0" class="tactile-slider">
+            <div class="text-[10px] text-slate-400">Zmiana szybkości wydawania</div>
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+            <div class="flex justify-between items-center text-xs font-mono">
+              <span class="font-bold text-slate-700">Wzrost Realny PKB $\Delta Y$:</span>
+              <span id="valDeltaY" class="font-bold text-emerald-600">+3.0%</span>
+            </div>
+            <input type="range" id="sliderDeltaY" min="-3" max="8" step="0.5" value="3" class="tactile-slider">
+            <div class="text-[10px] text-slate-400">Wzrost produkcji towarów</div>
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+            <div class="flex justify-between items-center text-xs font-mono">
+              <span class="font-bold text-slate-700">Horyzont Czasowy:</span>
+              <span id="valHorizonYears" class="font-bold text-blue-600">15 lat</span>
+            </div>
+            <input type="range" id="sliderHorizonYears" min="1" max="30" step="1" value="15" class="tactile-slider">
+            <div class="text-[10px] text-slate-400">Okres kumulacji inflacji</div>
+          </div>
+        </div>
+
+        <!-- KAFELKI KPI FISHERA -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="kpi-tile">
+            <div class="text-[11px] font-mono text-slate-500 uppercase">Stopa Inflacji ($\pi$)</div>
+            <div id="kpiInflationRate" class="text-2xl font-bold font-mono text-amber-600">+6.8%</div>
+            <div class="text-[10px] text-slate-400">Roczny wzrost cen CPI</div>
+          </div>
+          <div class="kpi-tile">
+            <div class="text-[11px] font-mono text-slate-500 uppercase">Realna Siła Nabywcza</div>
+            <div id="kpiRealPurchasingPower" class="text-xl font-bold font-mono text-rose-600">37.4 zł</div>
+            <div class="text-[10px] text-slate-400">z początkowych 100 zł</div>
+          </div>
+          <div class="kpi-tile">
+            <div class="text-[11px] font-mono text-slate-500 uppercase">Erozja Wartości</div>
+            <div id="kpiLossPercent" class="text-xl font-bold font-mono text-rose-700">-62.6%</div>
+            <div class="text-[10px] text-slate-400">Skumulowana strata</div>
+          </div>
+          <div class="kpi-tile">
+            <div class="text-[11px] font-mono text-slate-500 uppercase">Podatek Inflacyjny</div>
+            <div id="kpiSeigniorageVal" class="text-xl font-bold font-mono text-purple-600">10.0% PKB</div>
+            <div class="text-[10px] text-slate-400">Transfer do emitenta</div>
+          </div>
+        </div>
+
+        <!-- WYKRES PLOTLY DLA FISHERA -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden bg-white p-2">
+          <div id="plotFisher" class="w-full"></div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- MODUŁ 6: NIEMOŻLIWY TRÓJKĄT MUNDELLA-FLEMINGA                          -->
+      <!-- ===================================================================== -->
+      <section id="m6-trilemma" class="saas-card p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Moduł 06</span>
+            <h3 class="text-xl font-bold text-slate-900">Niemożliwy Trójkąt Mundella-Fleminga (Trilemma Makroekonomiczna)</h3>
+          </div>
+          <span class="badge-indigo text-xs font-mono px-2.5 py-1 rounded-md font-semibold">Architektura Kursowa</span>
+        </div>
+
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Laureat Nagrody Nobla Robert Mundell i Marcus Fleming udowodnili, że żadna gospodarka na świecie nie jest w stanie osiągnąć jednocześnie wszystkich trzech poniższych celów. Może wybrać <strong>dokładnie dwa</strong>, poświęcając trzeci:
+        </p>
+
+        <!-- PRZYCISKI REŻIMÓW -->
+        <div class="flex flex-wrap gap-2">
+          <button class="trilemma-btn" data-regime="fiatFloating">
+            <span>🔵 Współczesny Płynny Fiat (Polska, USA, UK)</span>
+          </button>
+          <button class="trilemma-btn" data-regime="brettonWoods">
+            <span>🟠 Bretton Woods / Standard Złota</span>
+          </button>
+          <button class="trilemma-btn" data-regime="eurozone">
+            <span>🟢 Unia Walutowa (Strefa Euro)</span>
+          </button>
+        </div>
+
+        <!-- WIZUALIZACJA TRÓJKĄTA I OPIS -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <!-- SVG Trójkąta -->
+          <div class="lg:col-span-5 flex justify-center p-4 bg-slate-50 border border-slate-200 rounded-xl">
+            <svg viewBox="0 0 340 300" class="w-full max-w-[280px] h-auto select-none">
+              <!-- Krawędzie -->
+              <line id="lineFixedCapital" x1="170" y1="40" x2="300" y2="250" stroke="#cbd5e1" stroke-width="2" />
+              <line id="lineCapitalAutonomy" x1="300" y1="250" x2="40" y2="250" stroke="#2563eb" stroke-width="4" />
+              <line id="lineAutonomyFixed" x1="40" y1="250" x2="170" y2="40" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4,4" />
+
+              <!-- Wierzchołek 1: Stały Kurs -->
+              <circle id="nodeFixedRate" cx="170" cy="40" r="14" fill="#94a3b8" stroke="#e2e8f0" stroke-width="2" />
+              <text x="170" y="20" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a" font-family="Plus Jakarta Sans">
+                1. Stały Kurs Walutowy
+              </text>
+
+              <!-- Wierzchołek 2: Wolny Kapitał -->
+              <circle id="nodeFreeCapital" cx="300" cy="250" r="14" fill="#2563eb" stroke="#ffffff" stroke-width="3" />
+              <text x="285" y="280" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a" font-family="Plus Jakarta Sans">
+                2. Wolny Kapitał
+              </text>
+
+              <!-- Wierzchołek 3: Autonomia Monetarna -->
+              <circle id="nodeMonetaryAutonomy" cx="40" cy="250" r="14" fill="#2563eb" stroke="#ffffff" stroke-width="3" />
+              <text x="55" y="280" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a" font-family="Plus Jakarta Sans">
+                3. Suwerenność Monetarna
+              </text>
+            </svg>
+          </div>
+
+          <!-- Karta Wyjaśniająca Reżim -->
+          <div class="lg:col-span-7 space-y-3 p-5 bg-white border border-slate-200 rounded-xl">
+            <div class="flex items-center justify-between">
+              <span id="trilemmaRegimeBadge" class="badge-blue text-xs font-mono px-2.5 py-1 rounded font-semibold">
+                Wybór: Wolny Kapitał + Niezależna Polityka
+              </span>
+              <span class="text-xs font-mono text-slate-400">Trilemma Status</span>
+            </div>
+            <h4 id="trilemmaRegimeTitle" class="text-base font-bold text-slate-900">
+              Współczesny Płynny Pieniądz Fiducjarny (Polska, USA, Wielka Brytania, Japonia)
+            </h4>
+            <div id="trilemmaAbandonedGoal" class="text-xs font-bold text-rose-600 bg-rose-50 p-2 rounded border border-rose-200">
+              Poświęcony Cel: Sztywny Kurs Walutowy (Kurs jest płynny / floating)
+            </div>
+            <p id="trilemmaRegimeDesc" class="text-xs text-slate-600 leading-relaxed">
+              Kraj pozwala rynkowi swobodnie wyceniać walutę (kurs płynny). W zamian bank centralny ma pełną swobodę ustalania stóp procentowych dla walki z inflacją lub recesją, a inwestorzy mogą bez przeszkód transferować kapitał za granicę.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- MODUŁ 7: BILANS: KORZYŚCI VS PATOLOGIE                                 -->
+      <!-- ===================================================================== -->
+      <section id="m7-bilans" class="saas-card p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Moduł 07</span>
+            <h3 class="text-xl font-bold text-slate-900">Bilans Przejścia: Szansa Cywilizacyjna czy Pakt z Diabłem?</h3>
+          </div>
+          <span class="badge-amber text-xs font-mono px-2.5 py-1 rounded-md font-semibold">Analiza Instytucjonalna</span>
+        </div>
+
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Przejście na pieniądz fiducjarny nie było jednoznacznym triumfem ani całkowitą katastrofą. Było to fundamentalne przekształcenie architektury gospodarczej z potężnymi zaletami i groźnymi kosztami ubocznymi.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- ZALETY -->
+          <div class="p-5 rounded-xl border border-emerald-200 bg-emerald-50/30 space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="text-emerald-600 font-bold text-lg">✓</span>
+              <h4 class="text-sm font-bold text-emerald-950">Główne Zalety i Osiągnięcia</h4>
+            </div>
+            <ul class="text-xs text-slate-700 space-y-2.5 list-disc list-inside pl-1 leading-relaxed">
+              <li><strong>Eliminacja gorsetu deflacyjnego:</strong> Standard złota dusił gospodarkę przy gwałtownym wzroście demograficznym i technologicznym. Gdy brakowało kruszcu, gospodarka popadała w wyniszczające kryzysy deflacyjne (np. Wielki Kryzys 1929).</li>
+              <li><strong>Możliwość antycyklicznej stymulacji:</strong> W momentach paniki i szoków podażowych (kryzys 2008, szok pandemiczny 2020) bank centralny może natychmiast dostarczyć płynność i zapobiec bankructwom całych sektorów.</li>
+              <li><strong>Płynne dostosowanie kursów:</strong> Waluty mogą się dewaluować lub umacniać w odpowiedzi na zmiany produktywności, amortyzując wstrząsy handlowe bez konieczności cięcia płac nominalnych (tzw. zjawisko sztywności płac).</li>
+              <li><strong>Finansowanie gigantycznej infrastruktury:</strong> System umożliwił skokowy rozwój globalnej energetyki, sieci transportowych i innowacji cyfrowych.</li>
+            </ul>
+          </div>
+
+          <!-- WADY / KOSZTY -->
+          <div class="p-5 rounded-xl border border-rose-200 bg-rose-50/30 space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="text-rose-600 font-bold text-lg">⚠</span>
+              <h4 class="text-sm font-bold text-rose-950">Patologie i Skutki Uboczne ("WTF Happened In 1971?")</h4>
+            </div>
+            <ul class="text-xs text-slate-700 space-y-2.5 list-disc list-inside pl-1 leading-relaxed">
+              <li><strong>Efekt Cantillona i nierówności majątkowe:</strong> Nowo wykreowany pieniądz trafia najpierw do wielkich instytucji finansowych i rządu, pompując wyceny aktywów (nieruchomości, akcje). Pracownicy najemni odczuwają skutki dopiero w postaci wyższych cen w sklepach.</li>
+              <li><strong>Rozjazd płac i produktywności:</strong> Od 1971 roku w krajach zachodnich dynamika realnych płac przestała nadążać za wzrostem produktywności pracowników, a zyski zostały skanalizowane do sektora finansowego.</li>
+              <li><strong>Eksplozja długu publicznego:</strong> Brak twardego ograniczenia budżetowego (tzw. <em>soft budget constraint</em>) umożliwił rządom nieustanne rolowanie zadłużenia bez konieczności równoważenia budżetu.</li>
+              <li><strong>Ciągła erozja oszczędności:</strong> Pieniądz fiducjarny traci siłę nabywczą każdego roku. Dolar USA od 1971 roku stracił ponad 85% swojej realnej wartości nabywczej.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- MODUŁ 8: SPRAWDZIAN WIEDZY (QUIZ DYDAKTYCZNY)                         -->
+      <!-- ===================================================================== -->
+      <section id="m8-quiz" class="saas-card p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Moduł 08</span>
+            <h3 class="text-xl font-bold text-slate-900">Sprawdzian Zrozumienia: Quiz Pojęciowy</h3>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="quizScoreBadge" class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full font-mono text-sm font-bold">
+              0 / 6
+            </span>
+            <button id="btnResetQuiz" class="btn-secondary text-xs">
+              <span>↻ Resetuj Quiz</span>
+            </button>
+          </div>
+        </div>
+
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Przetestuj swoje zrozumienie kluczowych pojęć, obalając najpopularniejsze mity makroekonomiczne. Każda odpowiedź zawiera natychmiastowe wyjaśnienie merytoryczne.
+        </p>
+
+        <!-- KONTENER QUIZU GENEROWANY W JS -->
+        <div id="quizContainer" class="space-y-4"></div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- MODUŁ 9: IMPLEMENTACJA W PYTHONIE                                     -->
+      <!-- ===================================================================== -->
+      <section id="m9-python" class="saas-card p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Moduł 09</span>
+            <h3 class="text-xl font-bold text-slate-900">Model Matematyczny w Pythonie</h3>
+          </div>
+          <button id="btnCopyPython" class="btn-secondary text-xs">
+            <span>📋 Kopiuj Kod</span>
+          </button>
+        </div>
+
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Poniższy skrypt symuluje proces kreacji pieniądza endogenicznego przez system bankowy, oblicza wskaźnik dylematu Triffina oraz generuje wykres skumulowanej erozji siły nabywczej w czasie.
+        </p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="text-xs font-mono text-slate-400">fiat_monetary_engine.py</span>
+            <span class="text-[11px] font-mono text-slate-500">Python 3.10+ / NumPy</span>
+          </div>
+          <pre class="p-4 text-xs font-mono text-slate-200 overflow-x-auto leading-relaxed"><code id="pythonCodeSnippet">"""
+Model Makroekonomiczny: Pieniądz Endogeniczny & Dylemat Triffina
+Lyceum Quantitative Series
+"""
+
+import numpy as np
+
+def simulate_endogenous_money_creation(base_money: float, reserve_ratio: float, lending_propensity: float, rounds: int = 10):
+    """
+    Symulacja kaskady kreacji pieniądza przez banki komercyjne.
+    base_money: Baza monetarna M0 (PLN)
+    reserve_ratio: Stopa rezerwy obowiązkowej (np. 0.035 dla NBP)
+    lending_propensity: Odsetek wolnych środków pożyczany przez banki (np. 0.90)
+    """
+    deposits = []
+    loans = []
+    reserves = []
+    
+    current_deposit = base_money
+    for r in range(1, rounds + 1):
+        res = current_deposit * reserve_ratio
+        loan = current_deposit * (1.0 - reserve_ratio) * lending_propensity
+        
+        deposits.append(current_deposit)
+        reserves.append(res)
+        loans.append(loan)
+        
+        current_deposit = loan  # Nowo stworzony depozyt zasila kolejny bank
+        
+    total_money = sum(deposits)
+    total_debt = sum(loans)
+    multiplier = total_money / base_money
+    
+    return {
+        "total_m1_m2": total_money,
+        "total_debt_created": total_debt,
+        "debt_share_pct": (total_debt / total_money) * 100.0,
+        "multiplier": multiplier
+    }
+
+def triffin_dilemma_eval(gold_reserves_bn: float, foreign_claims_bn: float):
+    """
+    Ocena stabilności reżimu Bretton Woods w myśl Dylematu Triffina.
+    """
+    coverage_ratio = (gold_reserves_bn / foreign_claims_bn) * 100.0
+    net_exposure = foreign_claims_bn - gold_reserves_bn
+    
+    status = "BEZPIECZNY" if coverage_ratio >= 100 else ("RYZYKO" if coverage_ratio >= 40 else "KRYZYS RUNU")
+    return {
+        "coverage_ratio_pct": coverage_ratio,
+        "net_exposure_bn": net_exposure,
+        "regime_status": status
+    }
+
+def fisher_inflation_projection(delta_m: float, delta_v: float, delta_y: float, years: int = 15):
+    """
+    Równanie Fishera: P = (M * V) / Y -> Stopa inflacji pi
+    """
+    pi = ((1.0 + delta_m) * (1.0 + delta_v) / (1.0 + delta_y)) - 1.0
+    purchasing_power_path = [100.0 / ((1.0 + pi) ** t) for t in range(years + 1)]
+    return {
+        "annual_inflation": pi * 100.0,
+        "final_purchasing_power": purchasing_power_path[-1],
+        "cumulative_loss_pct": 100.0 - purchasing_power_path[-1]
+    }
+
+if __name__ == "__main__":
+    # 1. Kreacja Pieniądza w Polsce (stopa NBP 3.5%)
+    res_money = simulate_endogenous_money_creation(base_money=10000.0, reserve_ratio=0.035, lending_propensity=0.90)
+    print(f"Podaż M1/M2: {res_money['total_m1_m2']:.2f} PLN | Udział Długu: {res_money['debt_share_pct']:.1f}%")
+
+    # 2. Sytuacja w USA w sierpniu 1971 r. (Szok Nixona)
+    res_triffin = triffin_dilemma_eval(gold_reserves_bn=10.2, foreign_claims_bn=46.8)
+    print(f"Pokrycie złota: {res_triffin['coverage_ratio_pct']:.1f}% | Stan: {res_triffin['regime_status']}")
+
+    # 3. Projekcja inflacji Fishera (Delta M = 10%, Delta Y = 3%, 15 lat)
+    res_fisher = fisher_inflation_projection(delta_m=0.10, delta_v=0.0, delta_y=0.03, years=15)
+    print(f"Roczna inflacja: {res_fisher['annual_inflation']:.2f}% | Siła nabywcza po 15 l: {res_fisher['final_purchasing_power']:.1f} zł")
+</code></pre>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- MODUŁ 10: ŹRÓDŁA I BIBLIOGRAFIA AKADEMICKA                            -->
+      <!-- ===================================================================== -->
+      <section id="m10-bibliografia" class="saas-card p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 font-mono">Moduł 10</span>
+            <h3 class="text-xl font-bold text-slate-900">Słownik Pojęć & Bibliografia Akademicka</h3>
+          </div>
+          <span class="badge-blue text-xs font-mono px-2.5 py-1 rounded-md font-semibold">Rygor Naukowy</span>
+        </div>
+
+        <!-- SŁOWNIK POJĘĆ -->
+        <div class="space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 font-mono">Słownik Pojęć Kluczowych</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+              <span class="font-bold text-slate-900">Pieniądz Fiducjarny (Fiat):</span>
+              <p class="text-slate-600">Pieniądz nieposiadający samoistnej wartości użytkowej i niemający pokrycia w metalu szlachetnym, którego obieg opiera się na zaufaniu i przymusie prawnym państwa.</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+              <span class="font-bold text-slate-900">Pieniądz Endogeniczny:</span>
+              <p class="text-slate-600">Koncepcja ekonomiczna głosząca, że podaż pieniądza jest tworzona wewnątrz gospodarki przez banki komercyjne w momencie udzielania kredytów, a nie odgórnie narzucana przez bank centralny.</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+              <span class="font-bold text-slate-900">Efekt Cantillona:</span>
+              <p class="text-slate-600">Nierównomierne rozprzestrzenianie się nowego pieniądza w gospodarce faworyzujące podmioty stojące najbliżej źródła kreacji (sektor finansowy, rząd) kosztem późniejszych odbiorców.</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+              <span class="font-bold text-slate-900">Seigniorage (Seniorat):</span>
+              <p class="text-slate-600">Dochód emitenta waluty wynikający z różnicy między kosztem wytworzenia jednostki pieniądza (papier, bity) a jej realną siłą nabywczą.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- BIBLIOGRAFIA -->
+        <div class="pt-4 border-t border-slate-100 space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 font-mono">Literatura Źródłowa</h4>
+          <ol class="text-xs text-slate-600 space-y-1.5 list-decimal list-inside leading-relaxed">
+            <li><strong>Bank of England (2014):</strong> McLeay, M., Radia, A., Thomas, R., <em>"Money creation in the modern economy"</em>, Bank of England Quarterly Bulletin, Q1.</li>
+            <li><strong>Triffin, Robert (1960):</strong> <em>"Gold and the Dollar Crisis: The Future of Convertibility"</em>, Yale University Press.</li>
+            <li><strong>Knapp, Georg Friedrich (1905):</strong> <em>"Staatliche Theorie des Geldes"</em> (State Theory of Money), Duncker & Humblot.</li>
+            <li><strong>Fisher, Irving (1911):</strong> <em>"The Purchasing Power of Money: Its Determination and Relation to Credit, Interest and Crises"</em>, Macmillan.</li>
+            <li><strong>Mundell, Robert (1963):</strong> <em>"Capital Mobility and Stabilization Policy under Fixed and Flexible Exchange Rates"</em>, Canadian Journal of Economics and Political Science.</li>
+            <li><strong>Eichengreen, Barry (2019):</strong> <em>"Globalizing Capital: A History of the International Monetary System"</em>, Princeton University Press.</li>
+            <li><strong>Friedman, Milton (1968):</strong> <em>"The Role of Monetary Policy"</em>, American Economic Review, 58(1), 1-17.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- STOPKA -->
+      <footer class="pt-6 pb-12 border-t border-slate-200 text-center text-xs text-slate-500 space-y-2">
+        <div class="flex items-center justify-center gap-2">
+          <span>🏛️</span>
+          <span class="font-semibold text-slate-700">Lyceum (Likeion) Educational Platform</span>
+          <span>•</span>
+          <span>Traktat Makroekonomiczny</span>
+        </div>
+        <p class="text-[11px] text-slate-400">
+          Projekt stworzony w ramach otwartego repozytorium dydaktyki ilościowej. Działa autonomicznie bez zewnętrznego backendu.
+        </p>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- Główny Skrypt Aplikacji -->
+  <script src="app.js"></script>
+</body>
+</html>
