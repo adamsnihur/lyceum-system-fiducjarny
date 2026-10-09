@@ -14,7 +14,8 @@ async def run_tests():
         page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
         page.on("pageerror", lambda err: page_errors.append(str(err)))
 
-        file_path = "file://" + os.path.abspath("Lyceum/system-fiducjarny/index.html")
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = "file://" + os.path.join(base_dir, "index.html")
         print(f"Loading {file_path}...")
         await page.goto(file_path, wait_until="networkidle", timeout=30000)
         await page.wait_for_timeout(2000)
@@ -136,7 +137,7 @@ async def run_tests():
         await page.set_viewport_size({"width": 1440, "height": 900})
 
         # 7. Screenshot dla weryfikacji wizualnej
-        screenshot_path = "Lyceum/system-fiducjarny/screenshot_verified.png"
+        screenshot_path = os.path.join(base_dir, "screenshot_verified.png")
         await page.screenshot(path=screenshot_path, full_page=True)
         print(f"Full page screenshot saved to {screenshot_path}")
 
