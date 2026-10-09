@@ -652,28 +652,30 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           <!-- SVG Trójkąta -->
           <div class="lg:col-span-5 flex justify-center p-4 bg-slate-50 border border-slate-200 rounded-xl">
-            <svg viewBox="0 0 340 300" class="w-full max-w-[280px] h-auto select-none">
+            <svg viewBox="0 0 340 300" class="w-full max-w-[280px] h-auto select-none overflow-visible">
               <!-- Krawędzie -->
-              <line id="lineFixedCapital" x1="170" y1="40" x2="300" y2="250" stroke="#cbd5e1" stroke-width="2" />
-              <line id="lineCapitalAutonomy" x1="300" y1="250" x2="40" y2="250" stroke="#2563eb" stroke-width="4" />
-              <line id="lineAutonomyFixed" x1="40" y1="250" x2="170" y2="40" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4,4" />
+              <line id="lineFixedCapital" x1="170" y1="45" x2="275" y2="230" stroke="#cbd5e1" stroke-width="2" />
+              <line id="lineCapitalAutonomy" x1="275" y1="230" x2="65" y2="230" stroke="#2563eb" stroke-width="4" />
+              <line id="lineAutonomyFixed" x1="65" y1="230" x2="170" y2="45" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4,4" />
 
               <!-- Wierzchołek 1: Stały Kurs -->
-              <circle id="nodeFixedRate" cx="170" cy="40" r="14" fill="#94a3b8" stroke="#e2e8f0" stroke-width="2" />
-              <text x="170" y="20" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a" font-family="Plus Jakarta Sans">
+              <circle id="nodeFixedRate" cx="170" cy="45" r="14" fill="#94a3b8" stroke="#e2e8f0" stroke-width="2" />
+              <text x="170" y="24" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a" font-family="Plus Jakarta Sans">
                 1. Stały Kurs Walutowy
               </text>
 
               <!-- Wierzchołek 2: Wolny Kapitał -->
-              <circle id="nodeFreeCapital" cx="300" cy="250" r="14" fill="#2563eb" stroke="#ffffff" stroke-width="3" />
-              <text x="285" y="280" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a" font-family="Plus Jakarta Sans">
-                2. Wolny Kapitał
+              <circle id="nodeFreeCapital" cx="275" cy="230" r="14" fill="#2563eb" stroke="#ffffff" stroke-width="3" />
+              <text x="275" y="258" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a" font-family="Plus Jakarta Sans">
+                <tspan x="275" dy="0">2. Wolny</tspan>
+                <tspan x="275" dy="14">Kapitał</tspan>
               </text>
 
               <!-- Wierzchołek 3: Autonomia Monetarna -->
-              <circle id="nodeMonetaryAutonomy" cx="40" cy="250" r="14" fill="#2563eb" stroke="#ffffff" stroke-width="3" />
-              <text x="55" y="280" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a" font-family="Plus Jakarta Sans">
-                3. Suwerenność Monetarna
+              <circle id="nodeMonetaryAutonomy" cx="65" cy="230" r="14" fill="#2563eb" stroke="#ffffff" stroke-width="3" />
+              <text x="65" y="258" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a" font-family="Plus Jakarta Sans">
+                <tspan x="65" dy="0">3. Suwerenność</tspan>
+                <tspan x="65" dy="14">Monetarna</tspan>
               </text>
             </svg>
           </div>
